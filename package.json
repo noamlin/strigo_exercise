@@ -1,0 +1,21 @@
+{
+  "name": "socketio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dal": "node ./dal/index.js",
+    "main": "node ./front-server/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "kafkajs": "^1.15.0",
+    "mongodb": "^3.6.3",
+    "object-hub": "^1.0.5",
+    "socket.io": "^3.0.4",
+    "uuid": "^3.4.0"
+  }
+}

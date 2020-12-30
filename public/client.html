@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<title>Socketio test</title>
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/proxserve.js"></script>
+	<script src="/oh.js"></script>
+<body>
+	<div class="login">
+		<label for="email">E-Mail:</label>
+		<select name="email" id="email">
+			<option value="jane@doe.com">jane@doe.com</option>
+			<option value="sam@doe.com">sam@doe.com</option>
+			<option value="ted@doe.com">ted@doe.com</option>
+		</select>
+
+		<label for="eventId">Event:</label>
+		<select name="eventId" id="eventId">
+			<option value="ev1">ev ONE</option>
+			<option value="ev2">evnt 2</option>
+			<option value="ev3">third event</option>
+		</select>
+
+		<button>Log In</button>
+	</div>
+
+	<div id="events"></div>
+<script>
+let events, eventsInstance;
+window.addEventListener('DOMContentLoaded', (event) => {
+	document.querySelector('div.login > button').onclick = function(e) {
+		document.querySelector('div.login').style.display = 'none';
+
+		let email = document.getElementById('email').value;
+		let eventId = document.getElementById('eventId').value;
+		let query = { email, eventId };
+		eventsInstance = new OH('events', monitorChanges, query);
+	}
+});
+
+function monitorChanges(eventsObj) {
+	events = eventsObj;
+
+	let keys = Object.keys(events);
+	for(let eventId of keys) {
+		buildEventDom(eventId);
+	}
+
+	events.on('change', (changes) => {
+		for(let change of changes) {
+			let path = Proxserve.splitPath(change.path);
+			if(path.length >= 4) {
+				let eventId = path[0];
+				let wsId = path[2];
+				console.log(change.value);
+				crudWorkspace(events[eventId].workspaces[wsId]);
+			}
+		}
+	});
+}
+
+function buildEventDom(eventId) {
+	let eventElm = document.createElement('div');
+	eventElm.classList.add('event', eventId);
+
+	let nameElm = document.createElement('p');
+	nameElm.textContent = events[eventId].name;
+
+	let workspacesElm = document.createElement('div');
+	workspacesElm.classList.add('workspaces');
+
+	eventElm.append(nameElm, workspacesElm);
+	let allEventsElm = document.getElementById('events');
+	allEventsElm.append(eventElm);
+
+	let keys = Object.keys(events[eventId].workspaces);
+	for(let wsId of keys) {
+		crudWorkspace(events[eventId].workspaces[wsId]);
+	}
+}
+
+function crudWorkspace(workspace) {
+	let allEventsElm = document.getElementById('events');
+	let workspacesElm = allEventsElm.querySelector(`.event.${workspace.eventId} > div.workspaces`);
+	let wsElm = workspacesElm.querySelector(`.${workspace.id}`);
+
+	if(!wsElm) {
+		wsElm = document.createElement('pre');
+		wsElm.classList.add('workspace', workspace.id);
+		workspacesElm.append(wsElm);
+	}
+
+	wsElm.textContent = JSON.stringify(workspace, undefined, 4);
+}
+</script>
+</body>
+</html>

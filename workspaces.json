@@ -1,0 +1,30 @@
+[
+	{
+		"id": "mkj54lkasd8",
+		"eventId": "lkdrit3533",
+		"owner": "jane@doe.com",
+		"status": "offline/preparing/ready/terminated/deleted",
+		"createdAt": "2018-08-09T18:13:00.294Z"
+	},
+	{
+		"id": "f6dsdcs789",
+		"eventId": "lkdrit3533",
+		"owner": "sam@doe.com",
+		"status": "offline/preparing/ready/terminated/deleted",
+		"createdAt": "2017-08-09T18:13:00.294Z"
+	},
+	{
+		"id": "n54njk543knj",
+		"eventId": "chxjz8754",
+		"owner": "jane@doe.com",
+		"status": "offline/preparing/ready/terminated/deleted",
+		"createdAt": "2016-08-09T18:13:00.294Z"
+	},
+	{
+		"id": "axsvf9c6s3s5a",
+		"eventId": "chxjz8754",
+		"owner": "sam@doe.com",
+		"status": "offline/preparing/ready/terminated/deleted",
+		"createdAt": "2015-08-09T18:13:00.294Z"
+	}
+]
