@@ -22,6 +22,8 @@ kafka.consumerConnect(conf.KAFKA_BOOTSTRAP_SERVERS).then((consumerInstance) => {
 });
 
 async function fetchAllEvents() {
+	//get all of the events from the database.
+	//they are pretty lean and workspaces will be added only later, upon specific client requests
 	http.get(`${conf.DAL_ADDR}/events`, (res) => {
 		const { statusCode } = res;
 		const contentType = res.headers['content-type'];
@@ -55,6 +57,8 @@ async function fetchAllEvents() {
 }
 
 function fetchWorkspaces(eventId) {
+	//get all workspaces per event.
+	//This could be greatly improved if added an option to get only workspaces of a specific owner
 	http.get(`${conf.DAL_ADDR}/events/${eventId}`, (res) => {
 		const { statusCode } = res;
 		const contentType = res.headers['content-type'];
